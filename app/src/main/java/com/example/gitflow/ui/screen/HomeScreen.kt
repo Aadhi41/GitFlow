@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.gitflow.R
+import com.example.gitflow.feature.getexperthelp.ExpertHelpFab
 import com.example.gitflow.ui.theme.GitFlowTheme
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -61,6 +62,8 @@ fun HomeScreen(navController: NavController) {
                 Text("Let's Chat ", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Bold)
             }
         }
+
+        ExpertHelpFab()
 
     }
 }
