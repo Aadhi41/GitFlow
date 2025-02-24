@@ -1,4 +1,4 @@
-package com.example.gitflow.ui.screen
+package com.example.gitflow.ui.chatbot
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,16 +23,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.gitflow.R
+<<<<<<< HEAD:app/src/main/java/com/example/gitflow/ui/screen/HomeScreen.kt
 import com.example.gitflow.feature.getexperthelp.ExpertHelpFab
 import com.example.gitflow.ui.theme.GitFlowTheme
+=======
+
+
+>>>>>>> 4bb4818 (API, Category & Updates):app/src/main/java/com/example/gitflow/ui/chatbot/ChatbotButton.kt
 @Composable
-fun HomeScreen(navController: NavController) {
+fun ChatbotButton(navController: NavController) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomEnd
@@ -42,7 +45,7 @@ fun HomeScreen(navController: NavController) {
             modifier = Modifier
                 .padding(16.dp)
                 .height(80.dp)
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(12.dp))
                 .width(80.dp),
             shape = RectangleShape,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA500)),
@@ -59,9 +62,10 @@ fun HomeScreen(navController: NavController) {
                     tint = Color.Unspecified
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text("Let's Chat ", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                Text("Let's Chat", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             }
         }
+<<<<<<< HEAD:app/src/main/java/com/example/gitflow/ui/screen/HomeScreen.kt
 
         ExpertHelpFab()
 
@@ -75,5 +79,7 @@ fun HomeScreen(navController: NavController) {
 fun GreetingPreview() {
     GitFlowTheme {
         HomeScreen(navController = rememberNavController())
+=======
+>>>>>>> 4bb4818 (API, Category & Updates):app/src/main/java/com/example/gitflow/ui/chatbot/ChatbotButton.kt
     }
 }

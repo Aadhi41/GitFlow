@@ -1,4 +1,4 @@
-package com.example.gitflow.ui.screen
+package com.example.gitflow.ui.chatbot
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,9 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.gitflow.data.getChatbotResponse
-import com.example.gitflow.ui.sections.ChatBubble
-import com.example.gitflow.ui.sections.ChatbotTopBar
+import com.example.gitflow.domain.getChatbotResponse
+import com.example.gitflow.ui.chatbot_sections.ChatBubble
+import com.example.gitflow.ui.chatbot_sections.ChatbotTopBar
 import kotlinx.coroutines.delay
 
 @Composable

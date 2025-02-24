@@ -55,6 +55,15 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    //ViewModel
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
+    //Retrofit
+    implementation (libs.retrofit)
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation (libs.gson)
+    //Coil
+    implementation("io.coil-kt:coil-compose:2.5.0")
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

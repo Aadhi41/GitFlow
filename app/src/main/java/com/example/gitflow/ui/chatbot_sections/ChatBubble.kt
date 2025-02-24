@@ -1,4 +1,4 @@
-package com.example.gitflow.ui.sections
+package com.example.gitflow.ui.chatbot_sections
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

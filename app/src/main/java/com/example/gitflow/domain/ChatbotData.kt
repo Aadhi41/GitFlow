@@ -1,4 +1,4 @@
-package com.example.gitflow.data
+package com.example.gitflow.domain
 
 data class ChatOption(val message: String, val options: List<String>?)
 
