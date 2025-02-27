@@ -1,4 +1,4 @@
-package com.example.gitflow.ui.apiscreens
+package com.example.gitflow.ui.furnitureScreens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,12 +15,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.gitflow.domain.Furniture
 import com.example.gitflow.ui.viewmodel.FurnitureViewmodel
 
 @Composable
-fun FurnitureListScreen(viewModel: FurnitureViewmodel) {
+fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewmodel) {
     val furnitureState by viewModel.furniture.collectAsState()
     var selectedCategory by remember { mutableStateOf<String?>(null) }
 
@@ -73,7 +74,11 @@ fun FurnitureListScreen(viewModel: FurnitureViewmodel) {
             if (filteredFurniture.isNotEmpty()) {
                 LazyColumn {
                     items(filteredFurniture) { furniture ->
-                        FurnitureCard(furniture)
+                        FurnitureCard(furniture) {
+                            // Pass data using savedStateHandle
+                            navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
+                            navController.navigate("detailScreen")
+                        }
                     }
                 }
             } else {
@@ -86,6 +91,7 @@ fun FurnitureListScreen(viewModel: FurnitureViewmodel) {
         }
     }
 }
+
 
 
 // Category Item (Horizontal Scroll)
@@ -120,11 +126,12 @@ fun CategoryItem(categoryName: String, isSelected: Boolean, onClick: () -> Unit)
 
 // Furniture Card UI
 @Composable
-fun FurnitureCard(furniture: Furniture) {
+fun FurnitureCard(furniture: Furniture, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .clickable { onClick() }, // Navigate to detail screen
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {

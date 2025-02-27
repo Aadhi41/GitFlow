@@ -12,7 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.gitflow.data.remote.RetrofitInstance
 import com.example.gitflow.data.repository.FurnitureRepository
-import com.example.gitflow.ui.apiscreens.FurnitureListScreen
+import com.example.gitflow.ui.furnitureScreens.FurnitureListScreen
 import com.example.gitflow.ui.chatbot.ChatbotButton
 import com.example.gitflow.ui.theme.GitFlowTheme
 import com.example.gitflow.ui.viewmodel.FurnitureViewModelFactory
@@ -29,7 +29,7 @@ fun HomeScreen(navController: NavController) {
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                FurnitureListScreen(viewModel = viewModel)
+                FurnitureListScreen(navController, viewModel)
                 ChatbotButton(navController)
             }
         }
