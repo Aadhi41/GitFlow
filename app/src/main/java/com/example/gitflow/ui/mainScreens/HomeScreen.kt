@@ -15,12 +15,12 @@ import com.example.gitflow.data.repository.FurnitureRepository
 import com.example.gitflow.ui.furnitureScreens.FurnitureListScreen
 import com.example.gitflow.ui.chatbot.ChatbotButton
 import com.example.gitflow.ui.theme.GitFlowTheme
+import com.example.gitflow.ui.viewmodel.FurnitureViewModel
 import com.example.gitflow.ui.viewmodel.FurnitureViewModelFactory
-import com.example.gitflow.ui.viewmodel.FurnitureViewmodel
 @Composable
 fun HomeScreen(navController: NavController) {
     val furnitureRepository = FurnitureRepository(RetrofitInstance.apiService)
-    val viewModel: FurnitureViewmodel = viewModel(factory = FurnitureViewModelFactory(furnitureRepository))
+    val viewModel: FurnitureViewModel = viewModel(factory = FurnitureViewModelFactory(furnitureRepository))
 
     Scaffold(
         content = { paddingValues ->

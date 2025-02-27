@@ -6,8 +6,8 @@ import com.example.gitflow.data.repository.FurnitureRepository
 
 class FurnitureViewModelFactory(private val furnitureRepository: FurnitureRepository): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(FurnitureViewmodel::class.java)) {
-            return FurnitureViewmodel(furnitureRepository) as T
+        if (modelClass.isAssignableFrom(FurnitureViewModel::class.java)) {
+            return FurnitureViewModel(furnitureRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
 

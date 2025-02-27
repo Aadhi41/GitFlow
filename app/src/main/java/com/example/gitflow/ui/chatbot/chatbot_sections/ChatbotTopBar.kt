@@ -1,4 +1,4 @@
-package com.example.gitflow.ui.chatbot_sections
+package com.example.gitflow.ui.chatbot.chatbot_sections
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -63,20 +63,18 @@ fun ChatbotTopBar(onClose: () -> Unit) {
                         )
                     }
                 }
-
-                // Close button remains on the right side
                 IconButton(onClick = onClose) {
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "Close Chat",
                         tint = Color.Gray,
-                        modifier = Modifier.size(24.dp) // Proper size
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.White, // Keep background clean
+            containerColor = Color.White,
             titleContentColor = Color.Black
         )
     )

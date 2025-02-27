@@ -7,9 +7,8 @@ import com.example.gitflow.domain.Model
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-
-class FurnitureViewmodel(private val repository: FurnitureRepository) : ViewModel() {
-    private val _furniture = MutableStateFlow<Model?>(null)  // Use StateFlow
+class FurnitureViewModel(private val repository: FurnitureRepository) : ViewModel() {
+    private val _furniture = MutableStateFlow<Model?>(null)
     val furniture: StateFlow<Model?> = _furniture
 
     init {
@@ -19,7 +18,7 @@ class FurnitureViewmodel(private val repository: FurnitureRepository) : ViewMode
     private fun fetchFurniture() {
         viewModelScope.launch {
             try {
-                val response = repository.FurnitureResponse()
+                val response = repository.getFurnitureData()
                 _furniture.value = response
             } catch (e: Exception) {
                 println("Error fetching furniture: ${e.message}")

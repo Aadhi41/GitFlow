@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "630807643654",
+    "project_id": "furniture-app-58116",
+    "storage_bucket": "furniture-app-58116.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630807643654:android:fb97722af9019b49be2587",
+        "android_client_info": {
+          "package_name": "com.example.gitflow"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcN6C8qSTz5Nyfg42_7_rOUaj6FX_eEcA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
