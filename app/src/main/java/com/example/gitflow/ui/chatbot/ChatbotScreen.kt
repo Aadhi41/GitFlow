@@ -12,8 +12,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.gitflow.domain.getChatbotResponse
-import com.example.gitflow.ui.chatbot_sections.ChatBubble
-import com.example.gitflow.ui.chatbot_sections.ChatbotTopBar
+import com.example.gitflow.ui.chatbot.chatbot_sections.ChatBubble
+import com.example.gitflow.ui.chatbot.chatbot_sections.ChatbotTopBar
 import kotlinx.coroutines.delay
 
 @Composable

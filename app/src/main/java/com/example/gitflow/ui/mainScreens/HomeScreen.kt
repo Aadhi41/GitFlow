@@ -12,15 +12,15 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.gitflow.data.remote.RetrofitInstance
 import com.example.gitflow.data.repository.FurnitureRepository
-import com.example.gitflow.ui.apiscreens.FurnitureListScreen
+import com.example.gitflow.ui.furnitureScreens.FurnitureListScreen
 import com.example.gitflow.ui.chatbot.ChatbotButton
 import com.example.gitflow.ui.theme.GitFlowTheme
+import com.example.gitflow.ui.viewmodel.FurnitureViewModel
 import com.example.gitflow.ui.viewmodel.FurnitureViewModelFactory
-import com.example.gitflow.ui.viewmodel.FurnitureViewmodel
 @Composable
 fun HomeScreen(navController: NavController) {
     val furnitureRepository = FurnitureRepository(RetrofitInstance.apiService)
-    val viewModel: FurnitureViewmodel = viewModel(factory = FurnitureViewModelFactory(furnitureRepository))
+    val viewModel: FurnitureViewModel = viewModel(factory = FurnitureViewModelFactory(furnitureRepository))
 
     Scaffold(
         content = { paddingValues ->
@@ -29,7 +29,7 @@ fun HomeScreen(navController: NavController) {
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                FurnitureListScreen(viewModel = viewModel)
+                FurnitureListScreen(navController, viewModel)
                 ChatbotButton(navController)
             }
         }

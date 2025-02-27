@@ -4,6 +4,6 @@ import com.example.gitflow.domain.Model
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("v3/ca38288b-6458-460f-be4c-51625c14722c")
+    @GET("v3/c994cdbc-7230-4357-b95b-dfece5a8f316")
     suspend fun getFurniture(): Model
 }

@@ -23,17 +23,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.gitflow.R
-<<<<<<< HEAD:app/src/main/java/com/example/gitflow/ui/screen/HomeScreen.kt
 import com.example.gitflow.feature.getexperthelp.ExpertHelpFab
+import com.example.gitflow.ui.mainScreens.HomeScreen
 import com.example.gitflow.ui.theme.GitFlowTheme
-=======
-
-
->>>>>>> 4bb4818 (API, Category & Updates):app/src/main/java/com/example/gitflow/ui/chatbot/ChatbotButton.kt
 @Composable
 fun ChatbotButton(navController: NavController) {
     Box(
@@ -65,7 +63,6 @@ fun ChatbotButton(navController: NavController) {
                 Text("Let's Chat", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             }
         }
-<<<<<<< HEAD:app/src/main/java/com/example/gitflow/ui/screen/HomeScreen.kt
 
         ExpertHelpFab()
 
@@ -79,7 +76,5 @@ fun ChatbotButton(navController: NavController) {
 fun GreetingPreview() {
     GitFlowTheme {
         HomeScreen(navController = rememberNavController())
-=======
->>>>>>> 4bb4818 (API, Category & Updates):app/src/main/java/com/example/gitflow/ui/chatbot/ChatbotButton.kt
     }
 }

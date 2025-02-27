@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-parcelize")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -63,7 +65,12 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation (libs.gson)
     //Coil
+    implementation("androidx.core:core-ktx:1.9.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0")) // Use BOM
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.auth.ktx)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
