@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.gitflow" />
+                  <option name="mobileSdkAppId" value="1:630807643654:android:fb97722af9019b49be2587" />
+                  <option name="projectId" value="furniture-app-58116" />
+                  <option name="projectNumber" value="630807643654" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

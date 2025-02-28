@@ -5,6 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -20,81 +22,124 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.gitflow.R
+import com.example.gitflow.domain.Furniture
 import com.example.gitflow.ui.theme.GitFlowTheme
+import com.example.gitflow.ui.viewmodel.SearchViewModel
+import kotlinx.coroutines.delay
 
 @Composable
-fun SearchBar() {
-    val context = LocalContext.current
+fun SearchScreen(navController: NavController, viewModel: SearchViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    val searchResults by viewModel.searchResults.collectAsState()
     var searchText by remember { mutableStateOf(TextFieldValue("")) }
+    var expanded by remember { mutableStateOf(false) }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    LaunchedEffect(searchText.text) {
+        if (searchText.text.length > 2) {
+            delay(300) // Debounce input
+            viewModel.searchFurniture(searchText.text)
+            expanded = true
+        } else {
+            expanded = false
+        }
+    }
 
-        TextField(
-            value = searchText,
-            onValueChange = { searchText = it },
-            placeholder = { Text("Search furniture", fontSize = 16.sp, color = Color.Gray) },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.search),
-                    contentDescription = "Search Icon",
-                    tint = Color.Gray,
-                    modifier = Modifier.size(24.dp)
-                )
-            },
+    Column {
+        // Search Bar
+        Row(
             modifier = Modifier
-                .weight(1f)
-                .height(50.dp)
-                .clip(RoundedCornerShape(50))
-                .background(Color(0xFFF5F5F5))
-                .padding(horizontal = 16.dp),
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextField(
+                value = searchText,
+                onValueChange = { searchText = it },
+                placeholder = { Text("Search furniture", fontSize = 16.sp, color = Color.Gray) },
+                modifier = Modifier
+                    .weight(1f)
+                    .height(50.dp)
+                    .clip(RoundedCornerShape(50))
+                    .background(Color(0xFFF5F5F5))
+                    .padding(horizontal = 16.dp),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent
+                ),
+                trailingIcon = {
+                    if (searchText.text.isNotEmpty()) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.clear), // Replace with clear icon
+                            contentDescription = "Clear Icon",
+                            tint = Color.Gray,
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable {
+                                    searchText = TextFieldValue("")
+                                    expanded = false
+                                }
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(id = R.drawable.search),
+                            contentDescription = "Search Icon",
+                            tint = Color.Gray,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
             )
-        )
+        }
 
-        Spacer(modifier = Modifier.width(12.dp))
-
-        // Notification Icon
-        Icon(
-            painter = painterResource(id = R.drawable.notif),
-            contentDescription = "Notifications",
-            tint = Color.Gray,
+        // Search Results Dropdown
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
             modifier = Modifier
-                .size(26.dp) // Adjusted for better proportion
-                .clickable {
-                    Toast.makeText(context, "No new notifications", Toast.LENGTH_SHORT).show()
-                }
-        )
+                .fillMaxWidth()
+                .background(Color.White)
+        ) {
+            searchResults?.categories?.flatMap { it.furnitures }?.forEach { furniture ->
+                DropdownMenuItem(
+                    text = {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            AsyncImage(
+                                model = furniture.images.firstOrNull(), // Load first image
+                                contentDescription = furniture.title,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                            )
 
-        Spacer(modifier = Modifier.width(12.dp))
+                            Spacer(modifier = Modifier.width(12.dp))
 
-        Image(
-            painter = painterResource(id = R.drawable.pfp),
-            contentDescription = "Profile",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(32.dp)
-                .clip(CircleShape)
-                .clickable {
-                    Toast.makeText(context, "Profile is locked", Toast.LENGTH_SHORT).show()
-                }
-        )
+                            Text(
+                                text = furniture.title,
+                                fontSize = 16.sp,
+                                color = Color.Black
+                            )
+                        }
+                    },
+                    onClick = {
+                        expanded = false
+                        navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
+                        navController.navigate("detailScreen")
+                    }
+                )
+            }
+        }
     }
 }
 
-@Composable
 @Preview
-fun SearchBarPreview() {
+@Composable
+fun SearchScreenPreview() {
     GitFlowTheme {
-        SearchBar()
+        SearchScreen(navController = NavController(LocalContext.current))
     }
 }
