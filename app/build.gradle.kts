@@ -58,17 +58,21 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     implementation(libs.androidx.lifecycle.runtime.compose)
+
+    //Indicator
+    implementation (libs.google.accompanist.pager)
+    implementation (libs.accompanist.pager.indicators)
     //ViewModel
     implementation (libs.androidx.lifecycle.viewmodel.compose)
     //Retrofit
     implementation (libs.retrofit)
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation (libs.converter.gson)
     implementation (libs.gson)
     //Coil
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation(libs.androidx.core.ktx.v190)
+    implementation(libs.coil.compose)
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.9.0")) // Use BOM
+    implementation(platform("com.google.firebase:firebase-bom:33.10.0")) // Use BOM
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.auth.ktx)
     debugImplementation(libs.androidx.ui.tooling)

@@ -13,6 +13,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.gitflow.data.remote.RetrofitInstance
 import com.example.gitflow.data.repository.FurnitureRepository
+import com.example.gitflow.feature.banners.AutoScrollingBanner
+import com.example.gitflow.feature.banners.Banner
 import com.example.gitflow.feature.searchbar.SearchScreen
 import com.example.gitflow.ui.furnitureScreens.FurnitureListScreen
 import com.example.gitflow.ui.chatbot.ChatbotButton
@@ -37,6 +39,10 @@ fun HomeScreen(navController: NavController) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     // Search Bar at the top
                     SearchScreen(navController, searchViewModel)
+
+                    Banner()
+
+                    AutoScrollingBanner()
                     // Furniture List below search bar
                     FurnitureListScreen(navController, furnitureViewModel)
                 }

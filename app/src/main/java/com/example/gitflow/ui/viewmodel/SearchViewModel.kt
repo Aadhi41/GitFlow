@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SearchViewModel : ViewModel() {
+    val isLoading = MutableStateFlow(false)
     private val _searchResults = MutableStateFlow<Model>(Model(emptyList()))
     val searchResults: StateFlow<Model> = _searchResults
 
