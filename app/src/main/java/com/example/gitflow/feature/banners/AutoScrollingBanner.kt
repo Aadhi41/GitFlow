@@ -22,7 +22,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun AutoScrollingBanner() {
+fun AutoScrollingBanner(modifier: Modifier = Modifier) {
     val images: List<Int> = listOf(
         R.drawable.image_banner1,
         R.drawable.image_banner2,
@@ -47,7 +47,7 @@ fun AutoScrollingBanner() {
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
-            .padding(16.dp)
+            .padding(horizontal = 16.dp) // Remove top & bottom padding
     ) {
         HorizontalPager(
             state = pagerState,
@@ -67,12 +67,12 @@ fun AutoScrollingBanner() {
             }
         }
 
-        // Indicators positioned **inside** the image banner (bottom center)
+        // Indicators
         Row(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 8.dp) // Adjust distance from bottom
-                .background(Color.Black.copy(alpha = 0.3f), shape = RoundedCornerShape(50)) // Semi-transparent background
+                .padding(bottom = 8.dp) // Adjust if needed
+                .background(Color.Black.copy(alpha = 0.3f), shape = RoundedCornerShape(50))
                 .padding(horizontal = 12.dp, vertical = 4.dp),
             horizontalArrangement = Arrangement.Center
         ) {
@@ -94,6 +94,7 @@ fun AutoScrollingBanner() {
             }
         }
     }
+
 }
 
 @Preview

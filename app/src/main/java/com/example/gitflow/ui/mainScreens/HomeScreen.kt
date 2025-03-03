@@ -1,6 +1,7 @@
 package com.example.gitflow.ui.mainScreens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.runtime.Composable
@@ -36,18 +37,19 @@ fun HomeScreen(navController: NavController) {
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    // Search Bar at the top
-                    SearchScreen(navController, searchViewModel)
-
-                    Banner()
-
-                    AutoScrollingBanner()
-                    // Furniture List below search bar
-                    FurnitureListScreen(navController, furnitureViewModel)
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(5.dp), // Reduce spacing
+                    contentPadding = PaddingValues(bottom = 80.dp) // Space for chatbot
+                ) {
+                    item { SearchScreen(navController, searchViewModel) }
+                    item { Banner() }
+                    item { AutoScrollingBanner(modifier = Modifier.offset(y = (-5).dp)) } // Moves it up slightly
+                    item { FurnitureListScreen(navController, furnitureViewModel) }
                 }
 
-                // Chatbot as an overlay in the bottom-right corner
+
+                // Chatbot button (remains fixed at bottom-right)
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -60,6 +62,9 @@ fun HomeScreen(navController: NavController) {
         }
     )
 }
+
+
+
 
 @Preview(showBackground = true)
 @Composable

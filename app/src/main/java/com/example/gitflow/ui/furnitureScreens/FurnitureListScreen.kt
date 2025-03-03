@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,7 +17,6 @@ import androidx.navigation.NavController
 import com.example.gitflow.ui.furnitureScreens.furnituresections.CategoryItem
 import com.example.gitflow.ui.furnitureScreens.furnituresections.FurnitureCard
 import com.example.gitflow.ui.viewmodel.FurnitureViewModel
-
 @Composable
 fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewModel) {
     val furnitureState by viewModel.furniture.collectAsState()
@@ -30,17 +31,14 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
         }
     } else {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
+            modifier = Modifier.fillMaxWidth().padding(10.dp) // Use Column, not LazyColumn
         ) {
-            // Categories Horizontal Scroll (LazyRow)
+            // Categories Horizontal Scroll
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(5.dp),
                 contentPadding = PaddingValues(bottom = 10.dp)
             ) {
-                // "All" category button
                 item {
                     CategoryItem(
                         categoryName = "All",
@@ -48,29 +46,24 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
                     ) { selectedCategory = null }
                 }
 
-                // Other categories
                 items(furnitureState!!.categories) { category ->
                     CategoryItem(
                         categoryName = category.name,
                         isSelected = category.name == selectedCategory
-                    ) {
-                        selectedCategory = category.name
-                    }
+                    ) { selectedCategory = category.name }
                 }
             }
 
-            // Fetch and shuffle furniture items
+            // Fetch and filter furniture items
             val filteredFurniture = when (selectedCategory) {
-                null -> furnitureState!!.categories.flatMap { it.furnitures }.shuffled() // Shuffle only for "All"
+                null -> furnitureState!!.categories.flatMap { it.furnitures }.shuffled()
                 else -> furnitureState!!.categories.find { it.name == selectedCategory }?.furnitures ?: emptyList()
             }
 
-
             if (filteredFurniture.isNotEmpty()) {
-                LazyColumn {
-                    items(filteredFurniture) { furniture ->
+                Column {
+                    filteredFurniture.forEach { furniture ->
                         FurnitureCard(furniture) {
-                            // Pass data using savedStateHandle
                             navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
                             navController.navigate("detailScreen")
                         }
@@ -86,4 +79,6 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
         }
     }
 }
+
+
 
