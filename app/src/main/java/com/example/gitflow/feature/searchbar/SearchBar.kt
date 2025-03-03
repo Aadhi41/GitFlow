@@ -1,6 +1,9 @@
 package com.example.gitflow.feature.searchbar
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +36,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun SearchScreen(navController: NavController, viewModel: SearchViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val searchResults by viewModel.searchResults.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
     var searchText by remember { mutableStateOf(TextFieldValue("")) }
     var expanded by remember { mutableStateOf(false) }
 
@@ -61,8 +65,8 @@ fun SearchScreen(navController: NavController, viewModel: SearchViewModel = andr
                 modifier = Modifier
                     .weight(1f)
                     .height(50.dp)
-                    .clip(RoundedCornerShape(50))
-                    .background(Color(0xFFF5F5F5))
+                    .clip(RoundedCornerShape(25.dp))
+                    .background(Color.White)
                     .padding(horizontal = 16.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = Color.Transparent,
@@ -73,7 +77,7 @@ fun SearchScreen(navController: NavController, viewModel: SearchViewModel = andr
                 trailingIcon = {
                     if (searchText.text.isNotEmpty()) {
                         Icon(
-                            painter = painterResource(id = R.drawable.clear), // Replace with clear icon
+                            painter = painterResource(id = R.drawable.clear),
                             contentDescription = "Clear Icon",
                             tint = Color.Gray,
                             modifier = Modifier
@@ -95,42 +99,54 @@ fun SearchScreen(navController: NavController, viewModel: SearchViewModel = andr
             )
         }
 
-        // Search Results Dropdown
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-        ) {
-            searchResults?.categories?.flatMap { it.furnitures }?.forEach { furniture ->
-                DropdownMenuItem(
-                    text = {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            AsyncImage(
-                                model = furniture.images.firstOrNull(), // Load first image
-                                contentDescription = furniture.title,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .clip(RoundedCornerShape(8.dp))
-                            )
+        // Loading Indicator
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(8.dp),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
 
-                            Spacer(modifier = Modifier.width(12.dp))
-
-                            Text(
-                                text = furniture.title,
-                                fontSize = 16.sp,
-                                color = Color.Black
-                            )
+        // Search Results Dropdown with Animation
+        AnimatedVisibility(visible = expanded, enter = fadeIn(), exit = fadeOut()) {
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White, shape = RoundedCornerShape(12.dp))
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                searchResults?.categories?.flatMap { it.furnitures }?.forEach { furniture ->
+                    DropdownMenuItem(
+                        text = {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                AsyncImage(
+                                    model = furniture.images.firstOrNull(),
+                                    contentDescription = furniture.title,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clip(RoundedCornerShape(8.dp))
+                                )
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Text(
+                                    text = furniture.title,
+                                    fontSize = 16.sp,
+                                    color = Color.Black
+                                )
+                            }
+                        },
+                        onClick = {
+                            expanded = false
+                            navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
+                            navController.navigate("detailScreen")
                         }
-                    },
-                    onClick = {
-                        expanded = false
-                        navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
-                        navController.navigate("detailScreen")
-                    }
-                )
+                    )
+                    Divider()
+                }
             }
         }
     }
