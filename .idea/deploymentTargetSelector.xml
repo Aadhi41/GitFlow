@@ -5,6 +5,12 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+<<<<<<< HEAD
+=======
+      <SelectionState runConfigName="PreviewCustomBottomNavigationBar">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+>>>>>>> 56e3af3bd5251ca39ddcfbc84f5449a2ce643d64
     </selectionStates>
   </component>
 </project>
