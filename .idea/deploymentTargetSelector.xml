@@ -5,21 +5,9 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-<<<<<<< HEAD
-=======
-      <SelectionState runConfigName="SearchBarPreview">
+      <SelectionState runConfigName="PreviewCustomBottomNavigationBar">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SearchScreenPreview">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="PreviewBanner">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="PreviewAutoScrollingBanner">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
->>>>>>> origin/dev
     </selectionStates>
   </component>
 </project>

@@ -17,6 +17,8 @@ import com.example.gitflow.data.repository.FurnitureRepository
 import com.example.gitflow.feature.banners.AutoScrollingBanner
 import com.example.gitflow.feature.banners.Banner
 import com.example.gitflow.feature.searchbar.SearchScreen
+import com.example.gitflow.feature.topbar.CustomTopBar
+import com.example.gitflow.navigation.bottomnavbar.CustomBottomNavigationBar
 import com.example.gitflow.ui.furnitureScreens.FurnitureListScreen
 import com.example.gitflow.ui.chatbot.ChatbotButton
 import com.example.gitflow.ui.theme.GitFlowTheme
@@ -26,11 +28,12 @@ import com.example.gitflow.ui.viewmodel.SearchViewModel
 
 @Composable
 fun HomeScreen(navController: NavController) {
-    val furnitureRepository = FurnitureRepository(RetrofitInstance.apiService)
-    val furnitureViewModel: FurnitureViewModel = viewModel(factory = FurnitureViewModelFactory(furnitureRepository))
+    val furnitureViewModel: FurnitureViewModel =
+        viewModel(factory = FurnitureViewModelFactory(FurnitureRepository(RetrofitInstance.apiService)))
     val searchViewModel: SearchViewModel = viewModel()
 
     Scaffold(
+        topBar = { CustomTopBar() },
         content = { paddingValues ->
             Box(
                 modifier = Modifier
@@ -39,17 +42,15 @@ fun HomeScreen(navController: NavController) {
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(5.dp), // Reduce spacing
-                    contentPadding = PaddingValues(bottom = 80.dp) // Space for chatbot
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    contentPadding = PaddingValues(bottom = 80.dp)
                 ) {
                     item { SearchScreen(navController, searchViewModel) }
                     item { Banner() }
-                    item { AutoScrollingBanner(modifier = Modifier.offset(y = (-5).dp)) } // Moves it up slightly
+                    item { AutoScrollingBanner(modifier = Modifier.offset(y = (-5).dp)) }
                     item { FurnitureListScreen(navController, furnitureViewModel) }
                 }
 
-
-                // Chatbot button (remains fixed at bottom-right)
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -62,7 +63,6 @@ fun HomeScreen(navController: NavController) {
         }
     )
 }
-
 
 
 
