@@ -23,11 +23,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
-
-
+import com.example.gitflow.domain.Category
+import com.example.gitflow.domain.Model
 @Composable
 fun DetailScreen(navController: NavController) {
     val furniture = navController.previousBackStackEntry?.savedStateHandle?.get<Furniture>("furniture")
+    val categories = navController.previousBackStackEntry?.savedStateHandle?.get<List<Category>>("categories")
+
+    // ✅ Check if the selected furniture is the first product in any category
+    val isFirstInCategory = categories?.any { it.furnitures.firstOrNull() == furniture } == true
 
     furniture?.let {
         Column(
@@ -36,7 +40,6 @@ fun DetailScreen(navController: NavController) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Image
             AsyncImage(
                 model = it.images.firstOrNull(),
                 contentDescription = it.title,
@@ -49,7 +52,6 @@ fun DetailScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Title
             Text(
                 text = it.title,
                 fontSize = 24.sp,
@@ -61,12 +63,11 @@ fun DetailScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Price & Rating
             Text(
                 text = "Price: $${it.price}",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF4CAF50) // Green shade for price
+                color = Color(0xFF4CAF50)
             )
 
             Text(
@@ -79,7 +80,6 @@ fun DetailScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Description
             Text(
                 text = it.description,
                 fontSize = 16.sp,
@@ -89,7 +89,20 @@ fun DetailScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Back Button
+            // ✅ Show AR Button Only for First Product in Each Category
+            if (isFirstInCategory) {
+                Button(
+                    onClick = { navController.navigate("ar_screen") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text(text = "View in AR", fontSize = 18.sp)
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+
             Button(
                 onClick = { navController.popBackStack() },
                 modifier = Modifier
@@ -109,3 +122,5 @@ fun DetailScreen(navController: NavController) {
         }
     }
 }
+
+

@@ -69,10 +69,12 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.gson)
     //Coil
-    implementation(libs.androidx.core.ktx.v190)
     implementation(libs.coil.compose)
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.10.0")) // Use BOM
+
+    implementation (libs.arsceneview.v0100 ) // Use version 0.9.6 as you requested
+
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.auth.ktx)
     debugImplementation(libs.androidx.ui.tooling)

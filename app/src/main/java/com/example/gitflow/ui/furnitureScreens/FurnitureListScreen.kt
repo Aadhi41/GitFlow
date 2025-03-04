@@ -17,6 +17,8 @@ import androidx.navigation.NavController
 import com.example.gitflow.ui.furnitureScreens.furnituresections.CategoryItem
 import com.example.gitflow.ui.furnitureScreens.furnituresections.FurnitureCard
 import com.example.gitflow.ui.viewmodel.FurnitureViewModel
+
+
 @Composable
 fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewModel) {
     val furnitureState by viewModel.furniture.collectAsState()
@@ -31,7 +33,7 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
         }
     } else {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(10.dp) // Use Column, not LazyColumn
+            modifier = Modifier.fillMaxWidth().padding(10.dp)
         ) {
             // Categories Horizontal Scroll
             LazyRow(
@@ -64,7 +66,9 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
                 Column {
                     filteredFurniture.forEach { furniture ->
                         FurnitureCard(furniture) {
+                            // ✅ Pass both the selected furniture and all categories
                             navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
+                            navController.currentBackStackEntry?.savedStateHandle?.set("categories", furnitureState!!.categories)
                             navController.navigate("detailScreen")
                         }
                     }
@@ -79,6 +83,7 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
         }
     }
 }
+
 
 
 
