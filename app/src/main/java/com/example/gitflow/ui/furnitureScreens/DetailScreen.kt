@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -27,13 +28,22 @@ import com.example.gitflow.domain.Category
 import com.example.gitflow.domain.Model
 @Composable
 fun DetailScreen(navController: NavController) {
-    val furniture = navController.previousBackStackEntry?.savedStateHandle?.get<Furniture>("furniture")
-    val categories = navController.previousBackStackEntry?.savedStateHandle?.get<List<Category>>("categories")
+    var furniture by rememberSaveable { mutableStateOf(navController.previousBackStackEntry?.savedStateHandle?.get<Furniture>("furniture")) }
+    var categories by rememberSaveable { mutableStateOf(navController.previousBackStackEntry?.savedStateHandle?.get<List<Category>>("categories")) }
 
-    // ✅ Check if the selected furniture is the first product in any category
-    val isFirstInCategory = categories?.any { it.furnitures.firstOrNull() == furniture } == true
+    // ✅ Find the category this furniture belongs to
+    val category = categories?.find { it.furnitures.contains(furniture) }
+    val isFirstInCategory = category?.furnitures?.firstOrNull() == furniture
 
-    furniture?.let {
+    if (furniture == null) {
+        // ✅ Show only if data is truly null
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("No Data Available", fontSize = 18.sp, color = Color.Gray)
+        }
+    } else {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -41,8 +51,8 @@ fun DetailScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
-                model = it.images.firstOrNull(),
-                contentDescription = it.title,
+                model = furniture?.images?.firstOrNull(),
+                contentDescription = furniture?.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -53,7 +63,7 @@ fun DetailScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = it.title,
+                text = furniture?.title.orEmpty(),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -64,14 +74,14 @@ fun DetailScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Price: $${it.price}",
+                text = "Price: $${furniture?.price}",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color(0xFF4CAF50)
             )
 
             Text(
-                text = "⭐ ${it.rating}  |  ${it.reviews} Reviews",
+                text = "⭐ ${furniture?.rating}  |  ${furniture?.reviews} Reviews",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 color = Color.Gray,
@@ -81,7 +91,7 @@ fun DetailScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = it.description,
+                text = furniture?.description.orEmpty(),
                 fontSize = 16.sp,
                 color = Color.DarkGray,
                 textAlign = TextAlign.Justify
@@ -92,7 +102,11 @@ fun DetailScreen(navController: NavController) {
             // ✅ Show AR Button Only for First Product in Each Category
             if (isFirstInCategory) {
                 Button(
-                    onClick = { navController.navigate("ar_screen") },
+                    onClick = {
+                        navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
+                        navController.currentBackStackEntry?.savedStateHandle?.set("category", category?.name)
+                        navController.navigate("ar_screen")
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
@@ -104,7 +118,9 @@ fun DetailScreen(navController: NavController) {
             }
 
             Button(
-                onClick = { navController.popBackStack() },
+                onClick = {
+                    navController.popBackStack()
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
@@ -113,14 +129,10 @@ fun DetailScreen(navController: NavController) {
                 Text(text = "Back", fontSize = 18.sp)
             }
         }
-    } ?: run {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("No Data Available", fontSize = 18.sp, color = Color.Gray)
-        }
     }
 }
+
+
+
 
 

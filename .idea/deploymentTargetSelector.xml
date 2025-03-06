@@ -4,13 +4,15 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2025-03-06T05:59:22.611102100Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=4b2e2cc9" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
       </SelectionState>
-<<<<<<< HEAD
-=======
-      <SelectionState runConfigName="PreviewCustomBottomNavigationBar">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
->>>>>>> 56e3af3bd5251ca39ddcfbc84f5449a2ce643d64
     </selectionStates>
   </component>
 </project>

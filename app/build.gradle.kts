@@ -39,6 +39,27 @@ android {
     buildFeatures {
         compose = true
     }
+    android {
+        packaging {
+            resources {
+                excludes += setOf(
+                    "META-INF/DEPENDENCIES",
+                    "META-INF/LICENSE",
+                    "META-INF/LICENSE.txt",
+                    "META-INF/NOTICE",
+                    "META-INF/NOTICE.txt",
+                    "META-INF/ASL2.0",
+                    "META-INF/AL2.0",
+                    "META-INF/LGPL2.1",
+                    "META-INF/versions/9/previous-compilation-data.bin",
+                    "META-INF/com.android.tools/proguard/corrupt",
+                    "META-INF/androidx.exifinterface_exifinterface.version"
+                )
+            }
+        }
+
+    }
+
 }
 
 dependencies {

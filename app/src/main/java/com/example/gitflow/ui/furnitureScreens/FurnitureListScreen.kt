@@ -1,11 +1,8 @@
 package com.example.gitflow.ui.furnitureScreens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -66,7 +63,6 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
                 Column {
                     filteredFurniture.forEach { furniture ->
                         FurnitureCard(furniture) {
-                            // ✅ Pass both the selected furniture and all categories
                             navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
                             navController.currentBackStackEntry?.savedStateHandle?.set("categories", furnitureState!!.categories)
                             navController.navigate("detailScreen")

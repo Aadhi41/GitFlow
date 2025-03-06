@@ -32,7 +32,7 @@ fun MainScreen() {
                 composable("profile") { ProfileScreen() }
                 composable("chatbot") { ChatbotScreen { navController.popBackStack() } }
                 composable("detailScreen") { DetailScreen(navController) }
-                composable("ar_screen") { ARScreen() }
+                composable("ar_screen") { ARScreen(navController) }
             }
         }
         }
