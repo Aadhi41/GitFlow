@@ -63,7 +63,6 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
                 Column {
                     filteredFurniture.forEach { furniture ->
                         FurnitureCard(furniture) {
-                            // ✅ Pass both the selected furniture and all categories
                             navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
                             navController.currentBackStackEntry?.savedStateHandle?.set("categories", furnitureState!!.categories)
                             navController.navigate("detailScreen")
