@@ -39,6 +39,27 @@ android {
     buildFeatures {
         compose = true
     }
+    android {
+        packaging {
+            resources {
+                excludes += setOf(
+                    "META-INF/DEPENDENCIES",
+                    "META-INF/LICENSE",
+                    "META-INF/LICENSE.txt",
+                    "META-INF/NOTICE",
+                    "META-INF/NOTICE.txt",
+                    "META-INF/ASL2.0",
+                    "META-INF/AL2.0",
+                    "META-INF/LGPL2.1",
+                    "META-INF/versions/9/previous-compilation-data.bin",
+                    "META-INF/com.android.tools/proguard/corrupt",
+                    "META-INF/androidx.exifinterface_exifinterface.version"
+                )
+            }
+        }
+
+    }
+
 }
 
 dependencies {
@@ -69,10 +90,12 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.gson)
     //Coil
-    implementation(libs.androidx.core.ktx.v190)
     implementation(libs.coil.compose)
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.10.0")) // Use BOM
+
+    implementation (libs.arsceneview.v0100 ) // Use version 0.9.6 as you requested
+
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.auth.ktx)
     debugImplementation(libs.androidx.ui.tooling)

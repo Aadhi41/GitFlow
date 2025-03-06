@@ -1,11 +1,8 @@
 package com.example.gitflow.ui.furnitureScreens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,6 +14,8 @@ import androidx.navigation.NavController
 import com.example.gitflow.ui.furnitureScreens.furnituresections.CategoryItem
 import com.example.gitflow.ui.furnitureScreens.furnituresections.FurnitureCard
 import com.example.gitflow.ui.viewmodel.FurnitureViewModel
+
+
 @Composable
 fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewModel) {
     val furnitureState by viewModel.furniture.collectAsState()
@@ -31,7 +30,7 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
         }
     } else {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(10.dp) // Use Column, not LazyColumn
+            modifier = Modifier.fillMaxWidth().padding(10.dp)
         ) {
             // Categories Horizontal Scroll
             LazyRow(
@@ -65,6 +64,7 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
                     filteredFurniture.forEach { furniture ->
                         FurnitureCard(furniture) {
                             navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
+                            navController.currentBackStackEntry?.savedStateHandle?.set("categories", furnitureState!!.categories)
                             navController.navigate("detailScreen")
                         }
                     }
@@ -79,6 +79,7 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
         }
     }
 }
+
 
 
 

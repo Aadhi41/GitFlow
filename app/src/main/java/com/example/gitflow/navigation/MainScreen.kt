@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.gitflow.navigation.bottomnavbar.CustomBottomNavigationBar
+import com.example.gitflow.ui.ar.ARScreen
 import com.example.gitflow.ui.cartscreen.CartScreen
 import com.example.gitflow.ui.chatbot.ChatbotScreen
 import com.example.gitflow.ui.favoritesscreen.FavoritesScreen
@@ -31,6 +32,9 @@ fun MainScreen() {
                 composable("profile") { ProfileScreen() }
                 composable("chatbot") { ChatbotScreen { navController.popBackStack() } }
                 composable("detailScreen") { DetailScreen(navController) }
+                composable("ar_screen") {
+                    ARScreen(navController)
+                }
             }
         }
     }
