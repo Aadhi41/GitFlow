@@ -2,6 +2,8 @@ package com.example.gitflow.feature.topbar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,6 +45,9 @@ fun CustomTopBar() {
                     .clip(CircleShape)
                     .border(2.dp, Color.White, CircleShape)
             )
-        }
+        },
+        modifier = Modifier
+            .height(70.dp)
+            //.padding(vertical = 10.dp)
     )
 }
