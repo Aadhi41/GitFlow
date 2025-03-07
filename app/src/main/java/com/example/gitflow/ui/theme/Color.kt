@@ -15,3 +15,5 @@ val Beige = Color(0xFFFCE7C8)  // #FCE7C8
 val OliveGreen = Color(0xFFB1C29E) // #B1C29E
 val SoftYellow = Color(0xFFFADA7A) // #FADA7A
 val WarmOrange = Color(0xFFEB5A3C) // #F0A04B
+val DarkBlue = Color(0xFF384B6B)
+val LightCream = Color(0xFFF5E9E4)

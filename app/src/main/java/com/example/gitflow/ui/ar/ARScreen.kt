@@ -36,8 +36,8 @@ fun ARScreen(navController: NavController) {
     val modelFile = when (category) {
         "Sofa" -> "models/sofa.glb"
         "Dining Table" -> "models/dining_table.glb"
-        "Chairs" -> "models/chair.glb"
-        "Wardrobe" -> "models/wardrobe.glb"
+        "Chairs" -> "models/office_chair2.glb"
+        "Wardrobe" -> "models/old_wardrobe.glb"
         else -> null
     }
 

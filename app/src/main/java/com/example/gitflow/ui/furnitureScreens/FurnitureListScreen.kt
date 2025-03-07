@@ -55,7 +55,7 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
 
             // Fetch and filter furniture items
             val filteredFurniture = when (selectedCategory) {
-                null -> furnitureState!!.categories.flatMap { it.furnitures }.shuffled()
+                null -> furnitureState!!.categories.flatMap { it.furnitures }
                 else -> furnitureState!!.categories.find { it.name == selectedCategory }?.furnitures ?: emptyList()
             }
 
@@ -79,6 +79,7 @@ fun FurnitureListScreen(navController: NavController, viewModel: FurnitureViewMo
         }
     }
 }
+
 
 
 
