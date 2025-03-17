@@ -19,12 +19,14 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.gitflow.ui.theme.WarmOrange
 
@@ -37,26 +39,26 @@ fun CustomBottomNavigationBar(navController: NavController) {
         BottomNavItem("Profile", Icons.Default.Person, "profile")
     )
 
-    var selectedItem by remember { mutableStateOf(0) }
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     val hapticFeedback = LocalHapticFeedback.current
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .clip(RoundedCornerShape(18.dp))
-            .shadow(10.dp, RoundedCornerShape(18.dp))
+            .padding(horizontal = 16.dp, vertical = 10.dp) // Added bottom padding for more spacing
+            .clip(RoundedCornerShape(50.dp)) // Capsule shape
+            .shadow(8.dp, RoundedCornerShape(50.dp)) // Smooth shadow
             .background(Color.White)
     ) {
         NavigationBar(
             modifier = Modifier
-                .border(1.dp, WarmOrange, RoundedCornerShape(18.dp))
+                .border(1.dp, WarmOrange, RoundedCornerShape(50.dp)) // Capsule border
                 .fillMaxWidth()
-                .height(90.dp),
+                .height(70.dp), // Increased height to give more space
             containerColor = Color.Transparent
         ) {
-            items.forEachIndexed { index, item ->
-                val isSelected = selectedItem == index
+            items.forEach { item ->
+                val isSelected = item.route == currentRoute
                 val animatedScale by animateFloatAsState(
                     targetValue = if (isSelected) 1.2f else 1f, label = "icon_scale"
                 )
@@ -64,29 +66,36 @@ fun CustomBottomNavigationBar(navController: NavController) {
                 NavigationBarItem(
                     selected = isSelected,
                     onClick = {
-                        selectedItem = index
-                        hapticFeedback.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
-                        navController.navigate(item.route) {
-                            popUpTo(navController.graph.startDestinationId) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
+                        if (!isSelected) {
+                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                            navController.navigate(item.route) {
+                                popUpTo(navController.graph.startDestinationId) { saveState = true }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
                     },
                     icon = {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically), // Ensures even spacing
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(top = 8.dp) // Moves the icon slightly lower
+                        ) {
                             Icon(
                                 imageVector = item.icon,
                                 contentDescription = item.title,
-                                tint = if (isSelected) Color(0xFFEB5A3C) else Color.Gray,
+                                tint = if (isSelected) WarmOrange else Color.Gray,
                                 modifier = Modifier
-                                    .size(if (isSelected) 28.dp else 24.dp)
+                                    .size(24.dp) // Standardized icon size
                                     .graphicsLayer(scaleX = animatedScale, scaleY = animatedScale)
                             )
                             Text(
                                 text = item.title,
-                                color = if (isSelected) Color(0xFFEB5A3C) else Color.Gray,
+                                color = if (isSelected) WarmOrange else Color.Gray,
                                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                                fontSize = if (isSelected) 14.sp else 12.sp,
+                                fontSize = 12.sp
                             )
                         }
                     },
@@ -100,8 +109,6 @@ fun CustomBottomNavigationBar(navController: NavController) {
         }
     }
 }
-
-
 
 data class BottomNavItem(val title: String, val icon: ImageVector, val route: String)
 

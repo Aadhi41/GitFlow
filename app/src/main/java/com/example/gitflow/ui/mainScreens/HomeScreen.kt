@@ -38,11 +38,13 @@ fun HomeScreen(navController: NavController) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues)
+                    .padding(paddingValues) // Ensure padding is applied correctly
             ) {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 8.dp), // Extra padding to avoid overlap
+                    verticalArrangement = Arrangement.spacedBy(15.dp),
                     contentPadding = PaddingValues(bottom = 80.dp)
                 ) {
                     item { SearchScreen(navController, searchViewModel) }
@@ -51,6 +53,7 @@ fun HomeScreen(navController: NavController) {
                     item { FurnitureListScreen(navController, furnitureViewModel) }
                 }
 
+                // Floating Chatbot Button
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -63,7 +66,6 @@ fun HomeScreen(navController: NavController) {
         }
     )
 }
-
 
 
 @Preview(showBackground = true)
