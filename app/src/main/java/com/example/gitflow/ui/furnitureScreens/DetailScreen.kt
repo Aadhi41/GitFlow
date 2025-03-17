@@ -214,7 +214,9 @@ fun DetailScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(
-                    onClick = { /* Handle Buy Now */ },
+                    onClick = {
+                        navController.navigate("address")
+                    },
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = 4.dp)
@@ -225,7 +227,7 @@ fun DetailScreen(navController: NavController) {
                 }
 
                 Button(
-                    onClick = { /* Handle Add to Cart */ },
+                    onClick = {},
                     modifier = Modifier
                         .weight(1f)
                         .padding(start = 4.dp)
@@ -248,7 +250,7 @@ fun DetailScreen(navController: NavController) {
             Button(
                 onClick = {
                     navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
-                    navController.navigate("review_screen") // No need to pass data in route
+                    navController.navigate("review_screen")
                 },
                 modifier = Modifier
                     .fillMaxWidth()

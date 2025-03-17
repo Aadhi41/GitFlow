@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.places)
     implementation(libs.play.services.analytics.impl)
+    implementation(libs.androidx.foundation.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -96,14 +97,20 @@ dependencies {
     implementation(libs.coil.compose)
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.10.0")) // Use BOM
-
+    //AR
     implementation (libs.arsceneview.v0100 ) // Use version 0.9.6 as you requested
-
+    //firestore
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.auth.ktx)
+    //location
+    implementation(libs.play.services.location) // Google Play Services Location
+    implementation(libs.androidx.lifecycle.runtime.ktx.v262) // Lifecycle Runtime KTX
+    implementation(libs.ui)
+
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
+    //roomdb
     implementation (libs.androidx.room.runtime)
     kapt ("androidx.room:room-compiler:2.6.1")
     implementation (libs.androidx.room.ktx)
