@@ -3,10 +3,13 @@ package com.example.gitflow.navigation
 import ReviewScreen
 import android.app.Application
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,22 +22,25 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.gitflow.data.database.AppDatabase
 import com.example.gitflow.data.repository.AddressRepository
+import com.example.gitflow.domain.AddressEntity
 import com.example.gitflow.navigation.bottomnavbar.CustomBottomNavigationBar
 import com.example.gitflow.ui.ar.ARScreen
 import com.example.gitflow.ui.cartscreen.CartScreen
 import com.example.gitflow.ui.chatbot.ChatbotScreen
-import com.example.gitflow.ui.favoritesscreen.FavoritesScreen
 import com.example.gitflow.ui.furnitureScreens.DetailScreen
 import com.example.gitflow.ui.mainScreens.HomeScreen
 import com.example.gitflow.ui.profilescreen.ProfileScreen
 import com.example.gitflow.domain.Furniture
 import com.example.gitflow.ui.address.AddressScreen
+import com.example.gitflow.ui.furnitureScreens.FavouriteScreen
 import com.example.gitflow.ui.viewmodel.AddressViewModel
 import com.example.gitflow.ui.viewmodel.AddressViewModelFactory
+import com.example.gitflow.ui.viewmodel.FavouriteViewModel
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+    val viewModel: FavouriteViewModel = viewModel()
 
     // Define screens where the bottom nav bar should be visible
     val bottomBarScreens = listOf("home", "cart", "favorites", "profile")
@@ -59,20 +65,51 @@ fun MainScreen() {
         Box(modifier = Modifier.padding(innerPadding)) {
             NavHost(navController, startDestination = "home") {
                 composable("home") { HomeScreen(navController) }
-                composable("favorites") { FavoritesScreen() }
+                composable("favorites") {  FavouriteScreen(navController, viewModel) }
                 composable("cart") { CartScreen() }
-                composable("profile") { ProfileScreen() }
 
+                // Profile screen
+                composable("profile") {
+                    val context = LocalContext.current.applicationContext as Application
+                    val database = AppDatabase.getDatabase(context)
+                    val repository = AddressRepository(context, database.addressDao())
+
+                    val addressViewModel: AddressViewModel = viewModel(
+                        factory = AddressViewModelFactory(context, repository)
+                    )
+
+                    // Observe the address state from the ViewModel
+                    val address by addressViewModel.addressState.collectAsState()
+
+                    // Show profile with address
+                    if (address != null) {
+                        // Use SimpleSavedAddressView instead of ProfileScreen
+                        ProfileScreen(
+                            savedAddress = address!!, // Pass the address here
+                        )
+                    } else {
+                        // Show loading or an empty state if the address is not available
+                        CircularProgressIndicator(modifier = Modifier.fillMaxSize())
+                    }
+                }
+
+                // Other screens (Review screen, Chatbot, etc.)
                 composable("review_screen") { backStackEntry ->
                     val furniture = navController.previousBackStackEntry?.savedStateHandle?.get<Furniture>("furniture")
                     if (furniture != null) {
                         ReviewScreen(navController, furniture)
                     }
                 }
+
+                // Other screens (Chatbot, AR, Detail, etc.)
                 composable("chatbot") { ChatbotScreen { navController.popBackStack() } }
-                composable("detailScreen") { DetailScreen(navController) }
+                composable("detailScreen") {
+                    DetailScreen(navController, viewModel)
+                }
+
                 composable("ar_screen") { ARScreen(navController) }
 
+                // Address screen for updating address
                 composable("address") {
                     val context = LocalContext.current.applicationContext as Application
                     val database = AppDatabase.getDatabase(context)
@@ -88,3 +125,6 @@ fun MainScreen() {
         }
     }
 }
+
+
+

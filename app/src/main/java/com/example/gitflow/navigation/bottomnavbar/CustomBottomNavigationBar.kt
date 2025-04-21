@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.gitflow.ui.theme.Orange
 import com.example.gitflow.ui.theme.WarmOrange
 
 @Composable
@@ -86,14 +87,14 @@ fun CustomBottomNavigationBar(navController: NavController) {
                             Icon(
                                 imageVector = item.icon,
                                 contentDescription = item.title,
-                                tint = if (isSelected) WarmOrange else Color.Gray,
+                                tint = if (isSelected) Orange else Color.Gray,
                                 modifier = Modifier
                                     .size(24.dp) // Standardized icon size
                                     .graphicsLayer(scaleX = animatedScale, scaleY = animatedScale)
                             )
                             Text(
                                 text = item.title,
-                                color = if (isSelected) WarmOrange else Color.Gray,
+                                color = if (isSelected) Orange else Color.Gray,
                                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                                 fontSize = 12.sp
                             )

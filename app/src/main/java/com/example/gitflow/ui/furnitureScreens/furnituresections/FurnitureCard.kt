@@ -96,4 +96,3 @@ fun FurnitureCard(furniture: Furniture, onClick: () -> Unit) {
         }
     }
 }
-

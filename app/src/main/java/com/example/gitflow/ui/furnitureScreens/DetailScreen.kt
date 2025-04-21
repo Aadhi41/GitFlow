@@ -17,7 +17,6 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.gitflow.domain.Furniture
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -33,10 +32,17 @@ import androidx.compose.ui.text.style.TextAlign
 import com.example.gitflow.R
 import com.example.gitflow.domain.Category
 import androidx.compose.foundation.pager.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import com.example.gitflow.ui.viewmodel.FavouriteViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DetailScreen(navController: NavController) {
+fun DetailScreen(
+    navController: NavController,
+    viewModel: FavouriteViewModel
+) {
     var furniture by rememberSaveable {
         mutableStateOf(navController.previousBackStackEntry?.savedStateHandle?.get<Furniture>("furniture"))
     }
@@ -44,8 +50,15 @@ fun DetailScreen(navController: NavController) {
         mutableStateOf(navController.previousBackStackEntry?.savedStateHandle?.get<List<Category>>("categories"))
     }
 
-    val category = categories?.find { it.furnitures.contains(furniture) }
-    val isFirstInCategory = category?.furnitures?.firstOrNull() == furniture
+     val category = categories?.find { it.furnitures.contains(furniture) }
+     val isFirstInCategory = category?.furnitures?.firstOrNull() == furniture
+//    val isFavourite = viewModel.favouriteList.collectAsState().value.contains(furniture)
+
+    val favouriteList = viewModel.favouriteList.collectAsState().value
+    val isFavourite = favouriteList.any { it.title == furniture?.title }
+
+
+
 
     if (furniture == null) {
         Box(
@@ -59,6 +72,7 @@ fun DetailScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
+                .padding(bottom = 16.dp) // Added bottom padding
         ) {
             val images = furniture?.images ?: emptyList()
             val pagerState = rememberPagerState { images.size }
@@ -67,8 +81,9 @@ fun DetailScreen(navController: NavController) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
-                    .clip(RoundedCornerShape(12.dp))
+                    .padding(horizontal = 16.dp)
+                    .height(280.dp) // Increased height
+                    .clip(RoundedCornerShape(16.dp)) // Rounded edges
                     .background(Color.LightGray)
             ) {
                 HorizontalPager(
@@ -83,17 +98,18 @@ fun DetailScreen(navController: NavController) {
                     )
                 }
 
+                // Back & Favorite Buttons
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(12.dp),
+                        .padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     IconButton(
                         onClick = { navController.popBackStack() },
                         modifier = Modifier
-                            .size(36.dp)
-                            .background(Color.White.copy(alpha = 0.6f), shape = RoundedCornerShape(50))
+                            .size(40.dp)
+                            .background(Color.White.copy(alpha = 0.7f), shape = CircleShape)
                             .padding(6.dp)
                     ) {
                         Icon(
@@ -104,48 +120,61 @@ fun DetailScreen(navController: NavController) {
                         )
                     }
 
+
+
                     IconButton(
-                        onClick = { /* Handle favorite */ },
-                        modifier = Modifier
-                            .size(36.dp)
-                            .background(Color.White.copy(alpha = 0.6f), shape = RoundedCornerShape(50))
-                            .padding(6.dp)
+                        onClick = {
+                            furniture?.let {
+                                // Checking if the furniture is already in the favorite list
+                                if (isFavourite) {
+                                    // Remove from favorites
+                                    viewModel.removeFromFavourite(it)
+                                } else {
+                                    // Add to favorites
+                                    viewModel.addToFavourite(it)
+                                }
+                            }
+                        }
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.heart_1),
-                            contentDescription = "Favorite",
+                            painter = painterResource(
+                                id = if (isFavourite) R.drawable.heart_2 else R.drawable.heart_1
+                            ),
+                            contentDescription = "Favourite Icon",
                             tint = Color.Red,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(28.dp)
                         )
                     }
+
+
                 }
             }
 
-            // Pagination Indicator
+            // Pagination Indicators
             Spacer(modifier = Modifier.height(8.dp))
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
                 repeat(images.size) { index ->
                     Box(
                         modifier = Modifier
                             .padding(4.dp)
-                            .size(if (pagerState.currentPage == index) 10.dp else 8.dp)
+                            .size(if (pagerState.currentPage == index) 12.dp else 8.dp)
                             .background(
                                 if (pagerState.currentPage == index) Color.DarkGray else Color.Gray,
-                                shape = RoundedCornerShape(50)
+                                shape = CircleShape
                             )
                     )
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
 
+            // Furniture Title & Price
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = furniture?.title.orEmpty(),
-                    fontSize = 24.sp,
+                    fontSize = 26.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
@@ -153,11 +182,11 @@ fun DetailScreen(navController: NavController) {
 
                 Text(
                     text = "Price: $${furniture?.price}",
-                    fontSize = 18.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color(0xFF4CAF50),
                     modifier = Modifier
-                        .padding(top = 4.dp)
+                        .padding(top = 6.dp)
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
@@ -171,6 +200,7 @@ fun DetailScreen(navController: NavController) {
                 )
             }
 
+            // Description
             Text(
                 text = furniture?.description.orEmpty(),
                 fontSize = 16.sp,
@@ -179,8 +209,9 @@ fun DetailScreen(navController: NavController) {
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
+            // "View in AR" Button (Only for first item in category)
             if (isFirstInCategory) {
                 Button(
                     onClick = {
@@ -191,8 +222,8 @@ fun DetailScreen(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
-                        .height(50.dp),
-                    shape = RoundedCornerShape(10.dp),
+                        .height(55.dp),
+                    shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6200EE))
                 ) {
                     Icon(
@@ -204,9 +235,10 @@ fun DetailScreen(navController: NavController) {
                     Text(text = "View in AR", fontSize = 18.sp)
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
+            // Buy Now & Add to Cart Buttons
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -214,25 +246,23 @@ fun DetailScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(
-                    onClick = {
-                        navController.navigate("address")
-                    },
+                    onClick = { navController.navigate("address") },
                     modifier = Modifier
                         .weight(1f)
-                        .padding(end = 4.dp)
-                        .height(50.dp),
-                    shape = RoundedCornerShape(10.dp)
+                        .padding(end = 6.dp)
+                        .height(55.dp),
+                    shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text(text = "Buy Now", fontSize = 16.sp)
+                    Text(text = "Buy Now", fontSize = 18.sp)
                 }
 
                 Button(
-                    onClick = {},
+                    onClick = { /* Add to Cart */ },
                     modifier = Modifier
                         .weight(1f)
-                        .padding(start = 4.dp)
-                        .height(50.dp),
-                    shape = RoundedCornerShape(10.dp),
+                        .padding(start = 6.dp)
+                        .height(55.dp),
+                    shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF9800))
                 ) {
                     Icon(
@@ -241,12 +271,13 @@ fun DetailScreen(navController: NavController) {
                         tint = Color.White
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Add to Cart", fontSize = 16.sp)
+                    Text(text = "Add to Cart", fontSize = 18.sp)
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
+            // Leave a Review Button (Fixed Layout Issue)
             Button(
                 onClick = {
                     navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
@@ -255,8 +286,8 @@ fun DetailScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .height(50.dp),
-                shape = RoundedCornerShape(10.dp),
+                    .height(55.dp),
+                shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF03A9F4))
             ) {
                 Icon(
@@ -264,15 +295,10 @@ fun DetailScreen(navController: NavController) {
                     contentDescription = "Leave a Review",
                     tint = Color.White
                 )
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "Leave a Review", fontSize = 18.sp)
             }
-
-
-
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
+}
 

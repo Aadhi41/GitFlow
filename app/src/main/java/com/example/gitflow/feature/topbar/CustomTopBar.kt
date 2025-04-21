@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gitflow.R
+import com.example.gitflow.ui.theme.CustomFont
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,14 +35,15 @@ fun CustomTopBar() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween, // Pushes title & image to opposite ends
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = "Furnishing Furnitures",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
+                        fontSize = 20.sp,
+                        fontFamily = CustomFont
                     ),
                     color = MaterialTheme.colorScheme.onPrimary
                 )
@@ -57,7 +59,7 @@ fun CustomTopBar() {
                 )
             }
         },
-        navigationIcon = {} // Empty to avoid unwanted spacing
+        navigationIcon = {}
     )
 }
 

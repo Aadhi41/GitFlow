@@ -19,38 +19,69 @@ class AddressViewModel(application: Application, private val repository: Address
     private val _addressState = MutableStateFlow<AddressEntity?>(null)
     val addressState: StateFlow<AddressEntity?> = _addressState
 
+    private val _isLoading = MutableStateFlow(false)  // To manage loading state
+    val isLoading: StateFlow<Boolean> = _isLoading
+
+    private val _errorMessage = MutableStateFlow<String?>(null)  // To manage error state
+    val errorMessage: StateFlow<String?> = _errorMessage
+
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(application)
-    private val context = application.applicationContext  // ✅ Fix for "Unresolved reference: context"
+    private val context = application.applicationContext  // Fix for "Unresolved reference: context"
 
     init {
-        fetchSavedAddress() // Fetch stored address on ViewModel init
+        fetchSavedAddress() // Fetch saved address when ViewModel is initialized
     }
 
+    // Fetch saved address from the repository
     fun fetchSavedAddress() {
         viewModelScope.launch {
-            _addressState.value = repository.getSavedAddress()
+            _isLoading.value = true
+            try {
+                _addressState.value = repository.getSavedAddress()
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to fetch saved address"
+            } finally {
+                _isLoading.value = false
+            }
         }
     }
 
+    // Fetch city and state using the pincode from the repository
     fun fetchCityStateFromPincode(pincode: String) {
         viewModelScope.launch {
-            val (city, state) = repository.getCityStateFromPincode(pincode)
-            _addressState.value = _addressState.value?.copy(city = city, state = state)
+            _isLoading.value = true
+            try {
+                val (city, state) = repository.getCityStateFromPincode(pincode)
+                _addressState.value = _addressState.value?.copy(city = city, state = state)
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to fetch city and state from pincode"
+            } finally {
+                _isLoading.value = false
+            }
         }
     }
 
+    // Save the address to the repository (DB)
     fun saveAddress(address: AddressEntity) {
         viewModelScope.launch {
-            repository.saveAddressToDB(address)
-            _addressState.value = address
+            _isLoading.value = true
+            try {
+                repository.saveAddressToDB(address)
+                _addressState.value = address
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to save address"
+            } finally {
+                _isLoading.value = false
+            }
         }
     }
 
-    /** 🔹 Fetch Current Location and Update Address */
+    // Fetch the current location and update the address state with it
     @SuppressLint("MissingPermission")
     fun fetchCurrentLocation() {
         viewModelScope.launch {
             try {
+                _isLoading.value = true
                 val locationResult = fusedLocationClient.lastLocation
                 locationResult.addOnSuccessListener { location: Location? ->
                     location?.let {
@@ -68,17 +99,22 @@ class AddressViewModel(application: Application, private val repository: Address
                                 city = address.locality ?: "Unknown",
                                 state = address.adminArea ?: "Unknown",
                                 addressType = "Home",
-                                isDefault = true // ✅ Fix for "No value passed for parameter 'isDefault'"
+                                isDefault = true
                             )
                         }
                     }
+                }.addOnFailureListener {
+                    _errorMessage.value = "Failed to fetch location"
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                _errorMessage.value = "An error occurred while fetching location"
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 }
+
 
 
 

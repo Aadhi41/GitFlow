@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gitflow.ui.theme.Orange
 
 @Composable
 fun CategoryItem(categoryName: String, isSelected: Boolean, onClick: () -> Unit) {
@@ -25,7 +26,7 @@ fun CategoryItem(categoryName: String, isSelected: Boolean, onClick: () -> Unit)
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) Color(0xFFEB5A3C) else Color.LightGray, // Highlight selected category
+            containerColor = if (isSelected) Orange else Color.LightGray, // Highlight selected category
             contentColor = Color.White
         )
     ) {

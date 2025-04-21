@@ -11,14 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.gitflow.ui.cartscreen.CartScreen
-import com.example.gitflow.ui.favoritesscreen.FavoritesScreen
-import com.example.gitflow.ui.mainScreens.HomeScreen
-import com.example.gitflow.ui.profilescreen.ProfileScreen
+
 
 sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: String) {
     object Home : BottomNavItem("home", Icons.Default.Home, "Home")

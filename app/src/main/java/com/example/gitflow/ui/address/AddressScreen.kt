@@ -19,7 +19,7 @@ fun AddressScreen(viewModel: AddressViewModel) {
 
     if (addressState == null) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator() // Show loading indicator until data is ready
+            CircularProgressIndicator()
         }
         return
     }
