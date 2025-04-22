@@ -125,12 +125,9 @@ fun DetailScreen(
                     IconButton(
                         onClick = {
                             furniture?.let {
-                                // Checking if the furniture is already in the favorite list
-                                if (isFavourite) {
-                                    // Remove from favorites
+                                if (viewModel.isFavourite(it)) {
                                     viewModel.removeFromFavourite(it)
                                 } else {
-                                    // Add to favorites
                                     viewModel.addToFavourite(it)
                                 }
                             }
@@ -138,13 +135,14 @@ fun DetailScreen(
                     ) {
                         Icon(
                             painter = painterResource(
-                                id = if (isFavourite) R.drawable.heart_2 else R.drawable.heart_1
+                                id = if (viewModel.isFavourite(furniture!!)) R.drawable.heart_2 else R.drawable.heart_1
                             ),
                             contentDescription = "Favourite Icon",
                             tint = Color.Red,
                             modifier = Modifier.size(28.dp)
                         )
                     }
+
 
 
                 }

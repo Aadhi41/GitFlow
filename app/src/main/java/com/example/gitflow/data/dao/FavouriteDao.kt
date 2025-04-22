@@ -3,7 +3,6 @@ import androidx.room.*
 import com.example.gitflow.domain.FavouriteEntity
 import kotlinx.coroutines.flow.Flow
 
-
 @Dao
 interface FavouriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -14,5 +13,9 @@ interface FavouriteDao {
 
     @Query("SELECT * FROM favourite_furniture")
     fun getAllFavourites(): Flow<List<FavouriteEntity>>
+
+    @Query("DELETE FROM favourite_furniture WHERE title = :title")
+    suspend fun removeByTitle(title: String)
 }
+
 

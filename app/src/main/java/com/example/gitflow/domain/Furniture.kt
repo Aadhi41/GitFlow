@@ -5,7 +5,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Furniture(
-    val id: Int = 0,
     val description: String,
     val images: List<String>,
     val price: Double,

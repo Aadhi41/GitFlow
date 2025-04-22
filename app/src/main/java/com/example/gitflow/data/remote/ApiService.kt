@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("v3/66fca20c-3bf1-4f68-af41-ec48d027d102")
+    @GET("v3/1d2ff89c-938d-443e-91d7-157278d47ef8")
     suspend fun getFurniture(): Model
 
 }

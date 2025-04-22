@@ -6,19 +6,16 @@ import kotlinx.coroutines.flow.Flow
 
 class FavouriteRepository(private val favouriteDao: FavouriteDao) {
 
-    // Add a favourite item
     suspend fun addFavourite(furniture: FavouriteEntity) {
         favouriteDao.addFavourite(furniture)
     }
 
-    // Remove a favourite item
-    suspend fun removeFavourite(furniture: FavouriteEntity) {
-        favouriteDao.removeFavourite(furniture)
+    suspend fun removeFavourite(title: String) {
+        favouriteDao.removeByTitle(title)
     }
 
-
-    // Get all favourite items
     fun getAllFavourites(): Flow<List<FavouriteEntity>> {
         return favouriteDao.getAllFavourites()
     }
 }
+

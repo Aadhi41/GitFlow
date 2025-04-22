@@ -2,9 +2,7 @@ package com.example.gitflow.ui.viewmodel
 
 import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gitflow.data.database.FavouriteDatabase
 import com.example.gitflow.data.repository.FavouriteRepository
@@ -23,7 +21,6 @@ class FavouriteViewModel(application: Application) : AndroidViewModel(applicatio
     val favouriteList: StateFlow<List<FavouriteEntity>> = _favouriteList
 
     init {
-        // Observe data from Room
         viewModelScope.launch {
             repository.getAllFavourites().collect { list ->
                 _favouriteList.value = list
@@ -31,36 +28,29 @@ class FavouriteViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    // Add a furniture item to favourites
     fun addToFavourite(furniture: Furniture) {
-        Log.d("FavouriteViewModel", "Adding to favourite: ${furniture.title}")
-        val favouriteEntity = FavouriteEntity(
+        val entity = FavouriteEntity(
             title = furniture.title,
             price = furniture.price,
             imageUrl = furniture.images.firstOrNull() ?: "",
             description = furniture.description
         )
         viewModelScope.launch {
-            repository.addFavourite(favouriteEntity)
+            repository.addFavourite(entity)
         }
     }
 
     fun removeFromFavourite(furniture: Furniture) {
-        // Map Furniture to FavouriteEntity
-        val favouriteEntity = FavouriteEntity(
-            title = furniture.title,
-            price = furniture.price,
-            imageUrl = furniture.images.firstOrNull() ?: "",
-            description = furniture.description
-        )
-
-        // Remove the item from favourites
         viewModelScope.launch {
-            repository.removeFavourite(favouriteEntity)
+            repository.removeFavourite(furniture.title)
         }
     }
 
+    fun isFavourite(furniture: Furniture): Boolean {
+        return _favouriteList.value.any { it.title == furniture.title }
+    }
 }
+
 
 
 

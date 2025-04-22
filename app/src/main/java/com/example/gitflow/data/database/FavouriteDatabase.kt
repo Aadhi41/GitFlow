@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.gitflow.data.dao.FavouriteDao
 import com.example.gitflow.domain.FavouriteEntity
 
-@Database(entities = [FavouriteEntity::class], version = 1, exportSchema = false)
+@Database(entities = [FavouriteEntity::class], version = 2, exportSchema = false)
 abstract class FavouriteDatabase : RoomDatabase() {
 
     abstract fun favouriteDao(): FavouriteDao
@@ -22,11 +22,14 @@ abstract class FavouriteDatabase : RoomDatabase() {
                     context.applicationContext,
                     FavouriteDatabase::class.java,
                     "favourite_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // 💥 Safe dev-mode migration
+                    .build()
                 INSTANCE = instance
                 instance
             }
         }
     }
 }
+
 
