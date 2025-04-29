@@ -40,6 +40,7 @@ fun CustomBottomNavigationBar(navController: NavController) {
         BottomNavItem("Profile", Icons.Default.Person, "profile")
     )
 
+    // Get the current route from the navigation backstack
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     val hapticFeedback = LocalHapticFeedback.current
 
@@ -55,7 +56,7 @@ fun CustomBottomNavigationBar(navController: NavController) {
             modifier = Modifier
                 .border(1.dp, WarmOrange, RoundedCornerShape(50.dp)) // Capsule border
                 .fillMaxWidth()
-                .height(70.dp), // Increased height to give more space
+                .height(70.dp), // Increased height for more space
             containerColor = Color.Transparent
         ) {
             items.forEach { item ->
@@ -67,9 +68,11 @@ fun CustomBottomNavigationBar(navController: NavController) {
                 NavigationBarItem(
                     selected = isSelected,
                     onClick = {
+                        // Trigger haptic feedback and navigate if not selected
                         if (!isSelected) {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                             navController.navigate(item.route) {
+                                // Ensure smooth navigation by saving state and preventing multiple copies of the same screen
                                 popUpTo(navController.graph.startDestinationId) { saveState = true }
                                 launchSingleTop = true
                                 restoreState = true
@@ -79,10 +82,10 @@ fun CustomBottomNavigationBar(navController: NavController) {
                     icon = {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically), // Ensures even spacing
+                            verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically), // Spacing
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(top = 8.dp) // Moves the icon slightly lower
+                                .padding(top = 8.dp) // Moves icon slightly lower
                         ) {
                             Icon(
                                 imageVector = item.icon,
@@ -103,7 +106,7 @@ fun CustomBottomNavigationBar(navController: NavController) {
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = Color.White,
                         unselectedIconColor = Color.Gray,
-                        indicatorColor = Color.Transparent
+                        indicatorColor = Color.Transparent // No bottom indicator
                     )
                 )
             }

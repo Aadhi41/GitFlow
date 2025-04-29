@@ -24,7 +24,7 @@ fun ChatbotScreen(onClose: () -> Unit) {
 
     LaunchedEffect(Unit) {
         chatMessages = listOf(
-            "👋 Hi there, welcome to Pepperfry! \nI am Pep, here to help you with your orders 📦 \nJust type in your query or pick an option from the menu 👇" to false
+            "👋 Hi there, welcome to CozyCorners! \nI am Pep, here to help you with your orders 📦 \nJust type in your query or pick an option from the menu 👇" to false
         )
     }
 
@@ -50,7 +50,8 @@ fun ChatbotScreen(onClose: () -> Unit) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 32.dp), // ✅ Added this to shift it a bit downward
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 LazyColumn(
@@ -63,7 +64,11 @@ fun ChatbotScreen(onClose: () -> Unit) {
                 }
 
                 options?.let {
-                    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    ) {
                         it.forEach { option ->
                             Button(
                                 onClick = {
@@ -71,9 +76,14 @@ fun ChatbotScreen(onClose: () -> Unit) {
                                     options = emptyList()
                                     pendingUserMessage = option
                                 },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF6600), contentColor = Color.White),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFFF6600),
+                                    contentColor = Color.White
+                                ),
                                 shape = RoundedCornerShape(20.dp),
-                                modifier = Modifier.fillMaxWidth().padding(4.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
                             ) {
                                 Text(option, fontWeight = FontWeight.Bold)
                             }
@@ -84,6 +94,7 @@ fun ChatbotScreen(onClose: () -> Unit) {
         }
     )
 }
+
 
 @Preview(showBackground = true)
 @Composable

@@ -18,9 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.gitflow.domain.Furniture
 import com.example.gitflow.ui.favoritesscreen.WishlistScreenUI
 import com.example.gitflow.ui.viewmodel.FavouriteViewModel
+
 
 @Composable
 fun FavouriteScreen(
@@ -43,7 +43,7 @@ fun FavouriteScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            // Navigate to the detail screen if needed
+
                         }
                 ) {
                     Row(
@@ -74,25 +74,15 @@ fun FavouriteScreen(
                                 color = Color.Gray
                             )
                         }
-
-                        // Add a Remove Button to unfavourite the item
-//                        IconButton(
-//                            onClick = { viewModel.removeFromFavourite(item) }
-//                        ) {
-//                            Icon(
-//                                imageVector = Icons.Default.Delete,
-//                                contentDescription = "Remove from favourites",
-//                                tint = Color.Red
-//                            )
-//                        }
-
                     }
+                }
             }
         }
     }
 }
 
-}
+
+
 
 
 

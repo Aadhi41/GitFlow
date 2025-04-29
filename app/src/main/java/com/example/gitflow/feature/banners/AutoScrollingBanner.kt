@@ -32,7 +32,6 @@ fun AutoScrollingBanner(modifier: Modifier = Modifier) {
     val pagerState = rememberPagerState { images.size }
     val coroutineScope = rememberCoroutineScope()
 
-    // Auto-scroll every 3 seconds
     LaunchedEffect(Unit) {
         while (true) {
             delay(3000)

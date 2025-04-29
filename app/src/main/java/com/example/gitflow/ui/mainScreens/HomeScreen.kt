@@ -33,17 +33,18 @@ fun HomeScreen(navController: NavController) {
     val searchViewModel: SearchViewModel = viewModel()
 
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = { CustomTopBar() },
         content = { paddingValues ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues) // Ensure padding is applied correctly
+                    .padding(paddingValues)
             ) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(top = 8.dp), // Extra padding to avoid overlap
+                        .padding(top = 8.dp), // Extra spacing after topbar
                     verticalArrangement = Arrangement.spacedBy(15.dp),
                     contentPadding = PaddingValues(bottom = 80.dp)
                 ) {
@@ -52,8 +53,6 @@ fun HomeScreen(navController: NavController) {
                     item { AutoScrollingBanner(modifier = Modifier.offset(y = (-5).dp)) }
                     item { FurnitureListScreen(navController, furnitureViewModel) }
                 }
-
-                // Floating Chatbot Button
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -68,7 +67,8 @@ fun HomeScreen(navController: NavController) {
 }
 
 
-@Preview(showBackground = true)
+
+    @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
     GitFlowTheme {

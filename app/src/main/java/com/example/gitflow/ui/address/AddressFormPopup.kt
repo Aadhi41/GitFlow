@@ -1,9 +1,15 @@
 package com.example.gitflow.ui.address
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -36,14 +42,43 @@ fun AddressFormPopup(
     }
 
     Dialog(onDismissRequest = onDismiss) {
-        Surface(shape = MaterialTheme.shapes.medium) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text("Add Address", style = MaterialTheme.typography.titleLarge)
+        Surface(
+            shape = RoundedCornerShape(20.dp),
+            tonalElevation = 8.dp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(24.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text(
+                    text = "Add Address",
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
 
-                TextField(value = name, onValueChange = { name = it }, label = { Text("Name") })
-                TextField(value = mobileNumber, onValueChange = { mobileNumber = it }, label = { Text("Mobile Number") })
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Name") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
 
-                TextField(
+                OutlinedTextField(
+                    value = mobileNumber,
+                    onValueChange = { mobileNumber = it },
+                    label = { Text("Mobile Number") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+
+                OutlinedTextField(
                     value = pincode,
                     onValueChange = {
                         pincode = it
@@ -52,45 +87,88 @@ fun AddressFormPopup(
                         }
                     },
                     label = { Text("PIN Code") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
                 )
 
-                TextField(value = addressLine1, onValueChange = { addressLine1 = it }, label = { Text("Address Line 1") })
-                TextField(value = addressLine2, onValueChange = { addressLine2 = it }, label = { Text("Address Line 2") })
-                TextField(value = city, onValueChange = {}, label = { Text("City") }, readOnly = true)
-                TextField(value = state, onValueChange = {}, label = { Text("State") }, readOnly = true)
+                OutlinedTextField(
+                    value = addressLine1,
+                    onValueChange = { addressLine1 = it },
+                    label = { Text("Address Line 1") },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-                Spacer(modifier = Modifier.height(10.dp))
+                OutlinedTextField(
+                    value = addressLine2,
+                    onValueChange = { addressLine2 = it },
+                    label = { Text("Address Line 2") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    OutlinedTextField(
+                        value = city,
+                        onValueChange = {},
+                        label = { Text("City") },
+                        readOnly = true,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    OutlinedTextField(
+                        value = state,
+                        onValueChange = {},
+                        label = { Text("State") },
+                        readOnly = true,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
                 Button(
                     onClick = { viewModel.fetchCurrentLocation() },
                     modifier = Modifier.fillMaxWidth()
                 ) {
+                    Icon(Icons.Default.LocationOn, contentDescription = "Locate Me")
+                    Spacer(Modifier.width(8.dp))
                     Text("Locate Me")
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                HorizontalDivider(thickness = 1.dp)
 
-                Row {
-                    Button(onClick = onDismiss, modifier = Modifier.weight(1f)) {
-                        Text("CANCEL")
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    OutlinedButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text("Cancel")
                     }
-                    Spacer(modifier = Modifier.width(10.dp))
+
                     Button(
                         onClick = {
                             val newAddress = AddressEntity(
-                                id = 0, name, mobileNumber, pincode, addressLine1, addressLine2, city, state, "Home", true
+                                id = 0,
+                                name = name,
+                                mobileNumber = mobileNumber,
+                                pincode = pincode,
+                                addressLine1 = addressLine1,
+                                addressLine2 = addressLine2,
+                                city = city,
+                                state = state,
+                                addressType = "Home",
+                                isDefault = true
                             )
                             onSave(newAddress)
                         },
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text("SAVE")
+                        Text("Save")
                     }
                 }
             }
         }
     }
 }
+
 
 
 

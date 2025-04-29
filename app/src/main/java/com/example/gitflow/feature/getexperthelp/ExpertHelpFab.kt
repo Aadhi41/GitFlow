@@ -31,7 +31,7 @@ fun ExpertHelpFab() {
                 onClick = { showDialog = true },
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .offset(x = (-2).dp, y = (150).dp),
+                    .offset(x = (-2).dp, y = (80).dp),
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
                 Column(

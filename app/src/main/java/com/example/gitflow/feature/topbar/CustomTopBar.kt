@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -26,7 +27,8 @@ fun CustomTopBar() {
     TopAppBar(
         modifier = Modifier
             .fillMaxWidth()
-            .height(75.dp),
+            .height(75.dp)
+            .shadow(elevation = 4.dp),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary
         ),
@@ -39,10 +41,10 @@ fun CustomTopBar() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Furnishing Furnitures",
+                    text = "CozyCorners",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
+                        fontSize = 30.sp,
                         fontFamily = CustomFont
                     ),
                     color = MaterialTheme.colorScheme.onPrimary
@@ -62,6 +64,8 @@ fun CustomTopBar() {
         navigationIcon = {}
     )
 }
+
+
 
 
 

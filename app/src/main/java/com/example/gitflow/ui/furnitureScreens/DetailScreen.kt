@@ -1,6 +1,6 @@
 package com.example.gitflow.ui.furnitureScreens
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,20 +36,28 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.ui.platform.LocalContext
+import com.example.gitflow.ui.viewmodel.CartViewModel
 import com.example.gitflow.ui.viewmodel.FavouriteViewModel
 
 @Composable
 fun DetailScreen(
     navController: NavController,
-    viewModel: FavouriteViewModel
+    viewModel: FavouriteViewModel,
+    cartViewModel: CartViewModel,
+
+
 ) {
-    var furniture by rememberSaveable {
-        mutableStateOf(navController.previousBackStackEntry?.savedStateHandle?.get<Furniture>("furniture"))
-    }
+//    var furniture by rememberSaveable {
+//        mutableStateOf(navController.previousBackStackEntry?.savedStateHandle?.get<Furniture>("furniture"))
+//    }
+    val furniture = navController.previousBackStackEntry?.savedStateHandle?.get<Furniture>("furniture")
     var categories by rememberSaveable {
         mutableStateOf(navController.previousBackStackEntry?.savedStateHandle?.get<List<Category>>("categories"))
     }
-
+    val cartItems = cartViewModel.cartItems.collectAsState().value
+    val isInCart = furniture?.let { cartItems.any { it.title == furniture!!.title } } ?: false
+    val context = LocalContext.current
      val category = categories?.find { it.furnitures.contains(furniture) }
      val isFirstInCategory = category?.furnitures?.firstOrNull() == furniture
 //    val isFavourite = viewModel.favouriteList.collectAsState().value.contains(furniture)
@@ -72,7 +80,7 @@ fun DetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(bottom = 16.dp) // Added bottom padding
+                .padding(bottom = 16.dp)
         ) {
             val images = furniture?.images ?: emptyList()
             val pagerState = rememberPagerState { images.size }
@@ -82,8 +90,8 @@ fun DetailScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .height(280.dp) // Increased height
-                    .clip(RoundedCornerShape(16.dp)) // Rounded edges
+                    .height(280.dp)
+                    .clip(RoundedCornerShape(16.dp))
                     .background(Color.LightGray)
             ) {
                 HorizontalPager(
@@ -98,7 +106,6 @@ fun DetailScreen(
                     )
                 }
 
-                // Back & Favorite Buttons
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -148,7 +155,6 @@ fun DetailScreen(
                 }
             }
 
-            // Pagination Indicators
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -168,7 +174,6 @@ fun DetailScreen(
             }
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Furniture Title & Price
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = furniture?.title.orEmpty(),
@@ -198,7 +203,6 @@ fun DetailScreen(
                 )
             }
 
-            // Description
             Text(
                 text = furniture?.description.orEmpty(),
                 fontSize = 16.sp,
@@ -209,7 +213,6 @@ fun DetailScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // "View in AR" Button (Only for first item in category)
             if (isFirstInCategory) {
                 Button(
                     onClick = {
@@ -236,7 +239,6 @@ fun DetailScreen(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            // Buy Now & Add to Cart Buttons
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -255,7 +257,20 @@ fun DetailScreen(
                 }
 
                 Button(
-                    onClick = { /* Add to Cart */ },
+                    onClick = {
+                        furniture?.let {
+                            cartViewModel.toggleCart(it)
+                            val msg = if (cartViewModel.isInCart(it)) {
+                                "Added to Cart"
+                            } else {
+                                "Removed from Cart"
+                            }
+                            if (msg.isNotEmpty()) {
+                                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                            }
+
+                        }
+                    },
                     modifier = Modifier
                         .weight(1f)
                         .padding(start = 6.dp)
@@ -269,13 +284,12 @@ fun DetailScreen(
                         tint = Color.White
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Add to Cart", fontSize = 18.sp)
+                    Text(text = if (isInCart) "In Cart" else "Add to Cart", fontSize = 18.sp)
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Leave a Review Button (Fixed Layout Issue)
             Button(
                 onClick = {
                     navController.currentBackStackEntry?.savedStateHandle?.set("furniture", furniture)
